@@ -27,23 +27,31 @@ endfunction
 
 "------------------------------ Cutting to rulers -----------------------------"
 
+" Return the position on the current line
+function vim_ruler#get_pos()
+    let l:pos = getcurpos()
+    return l:pos[2]
+endfunction
+
+" Set the position on the current line
+function vim_ruler#set_pos(new_pos)
+    let l:pos = getcurpos()
+    let l:pos[2] = a:new_pos
+    call setpos(".", l:pos)
+endfunction
+
 " Tell if the current line is longer than the given argument
 function vim_ruler#IsLineLonguer(len)
-    let l:pos = getcurpos()
-    let l:pos[2] = a:len + 1
-    call setpos(".", l:pos)
-    let l:pos = getcurpos()[2]
-    return l:pos > a:len
+    call vim_ruler#set_pos(a:len + 1)
+    return vim_ruler#get_pos() > a:len
 endfunction
 
 " Cut a line in multiple lines that are shorter than the given argument
-" Cut line at spaces
+" Cut line at spaces, tabs, or simply add new lines
 function vim_ruler#CutToLen(len)
     while vim_ruler#IsLineLonguer(a:len)
         " Try to go to the last space and replace it with a new line
-        let l:pos = getcurpos()
-        let l:pos[2] = l:pos[2] + 1
-        call setpos(".", l:pos)
+        call vim_ruler#set_pos(vim_ruler#get_pos() + 1)
         exec "normal F r\n"
         if getcurpos()[2] > 1
             " We did not found a space so we search for a tab
@@ -51,9 +59,7 @@ function vim_ruler#CutToLen(len)
         endif
         if getcurpos()[2] > 1
             " We did not found a tab either, so we add a new line at the edge
-            let l:pos = getcurpos()
-            let l:pos[2] = a:len
-            call setpos(".", l:pos)
+            call vim_ruler#set_pos(a:len)
             exec "normal a\n"
         endif
     endwhile
