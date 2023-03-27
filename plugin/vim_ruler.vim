@@ -1,8 +1,3 @@
-function RulerToggle()
-    call vim_ruler#ToggleRuler()
-endfunction
-
-function RulerCut()
-    call vim_ruler#CutToRuler()
-endfunction
+command RulerCycle :call vim_ruler#ToggleRuler()
+command RulerCut :call vim_ruler#CutToRuler()
 

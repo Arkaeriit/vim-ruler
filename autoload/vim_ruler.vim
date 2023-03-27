@@ -1,25 +1,25 @@
 "------------------------------- Cycling rulers -------------------------------"
 
-if !exists("g:colorColumnList")
-    let g:colorColumnList = [80, 50, 100]
+if !exists("g:rulerList")
+    let g:rulerList = [80, 50, 100]
 endif
 
-let s:colorColumnListIndex = len(g:colorColumnList)
+let s:rulerListIndex = len(g:rulerList)
 
 " Update the index variable. Should be done before indexing the ruler list
 function vim_ruler#UpdateIndex()
-    let s:colorColumnListIndex = s:colorColumnListIndex + 1
-    let s:colorColumnListIndex = s:colorColumnListIndex % (len(g:colorColumnList) + 1)
+    let s:rulerListIndex = s:rulerListIndex + 1
+    let s:rulerListIndex = s:rulerListIndex % (len(g:rulerList) + 1)
 endfunction
 
 " Cycle the rulers to the next one
 function vim_ruler#ToggleRuler()
     call vim_ruler#UpdateIndex()
-    if s:colorColumnListIndex == len(g:colorColumnList)
+    if s:rulerListIndex == len(g:rulerList)
         set colorcolumn=
         echom "Color column disabled"
     else 
-        let l:col = g:colorColumnList[s:colorColumnListIndex]
+        let l:col = g:rulerList[s:rulerListIndex]
         let &colorcolumn = l:col
         echom "Color column at ".l:col." column"
     endif
@@ -65,7 +65,7 @@ function vim_ruler#CutToLen(len)
     endwhile
 endfunction
     
-" Cut to the shortest vertical ruler
+" Cut to the first vertical ruler
 function vim_ruler#CutToRuler()
     let l:len = &colorcolumn + 1 - 1
     if l:len == 0
