@@ -2,6 +2,8 @@
 
 A plugin to let you cycle and use rulers in Vim.
 
+![vim-ruler demo](https://github.com/Arkaeriit/vim-ruler/blob/master/vim-ruler.gif?raw=true)
+
 ## Cycling ruler
 
 This plugin lets you cycle through various position of ruler (made with Vim's
